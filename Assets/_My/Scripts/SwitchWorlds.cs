@@ -14,6 +14,7 @@ public class SwitchWorlds : MonoBehaviour
     {
         public Material skyboxMat;
         public float gravity;
+        public GameObject terrain;
     }
 
     public List<WorldSetting> worldSetting;
@@ -48,9 +49,16 @@ public class SwitchWorlds : MonoBehaviour
     {
         if (worldCount >= 2)//only switch if there are at least 2 worlds
         {
+            //disable previous terrain
+            worldSetting[worldIndex].terrain.SetActive(false);
+
             worldIndex++;
             if (worldIndex >= worldCount)
                 worldIndex = 0;
+
+            //enable current terrain
+            worldSetting[worldIndex].terrain.SetActive(true);
+
             RenderSettings.skybox = worldSetting[worldIndex].skyboxMat;
             Physics.gravity = new Vector3(0, worldSetting[worldIndex].gravity, 0);
             Debug.Log(worldSetting[worldIndex].gravity);

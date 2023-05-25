@@ -15,15 +15,24 @@ public class WatchForReleased : MonoBehaviour
     EffectsOnReleased effectsOnReleased;
     ObjectTracker objectTracker;
     DrawAxis3D drawAxis3D;
-    public TextMeshPro heightAboveOriginText;
-    public TextMeshPro launchSpeedText;
-    public TextMeshPro launchAngleText;
-    public TextMeshPro heightBelowOriginText;
-    public TextMeshPro horizontalDistanceText;
+    public TextMeshProUGUI heightAboveOriginText;
+    public TextMeshProUGUI launchSpeedText;
+    public TextMeshProUGUI launchAngleText;
+    public TextMeshProUGUI heightBelowOriginText;
+    public TextMeshProUGUI horizontalDistanceText;
+    /*
+    public TextMeshProUGUI xxheightAboveOriginText;
+    public TextMeshProUGUI xxlaunchSpeedText;
+    public TextMeshProUGUI xxlaunchAngleText;
+    public TextMeshProUGUI xxheightBelowOriginText;
+    public TextMeshProUGUI xxhorizontalDistanceText;
+    */
+
 
     bool waitingCollision;
     private float launchSpeed;
     private float launchAngle;
+    private int fontSize;
 
     private void OnEnable()
     {
@@ -41,10 +50,10 @@ public class WatchForReleased : MonoBehaviour
     {
         drawAxis3D.HideLine();
         PhysicsTextHideAll();
-        effectsOnReleased.StartTrail();
+        
         motionVectorCalculator.ApplyMotionToTransform();
         objectTracker.StartTracking();
-
+        effectsOnReleased.StartTrail();
         waitingCollision = true;
     }
     private void UxrGrabManager_ObjectReleasing(object sender, UxrManipulationEventArgs e)
@@ -61,11 +70,12 @@ public class WatchForReleased : MonoBehaviour
         drawAxis3D = GetComponent<DrawAxis3D>();
 
         waitingCollision = false;
-        PhysicsText.InitText(heightAboveOriginText, "0.00", false, 72);
-        PhysicsText.InitText(launchSpeedText, "0.00", false, 72);
-        PhysicsText.InitText(launchAngleText, "0.00", false, 72);
-        PhysicsText.InitText(heightBelowOriginText, "0.00", false, 72);
-        PhysicsText.InitText(horizontalDistanceText, "0.00", false, 72);
+        fontSize = 200;
+        PhysicsText.InitText(heightAboveOriginText, "0.00", false, fontSize);
+        PhysicsText.InitText(launchSpeedText, "0.00", false, fontSize);
+        PhysicsText.InitText(launchAngleText, "0.00", false, fontSize);
+        PhysicsText.InitText(heightBelowOriginText, "0.00", false, fontSize);
+        PhysicsText.InitText(horizontalDistanceText, "0.00", false, fontSize);
         launchSpeed = 0;
         launchAngle = 0;
     }
@@ -115,32 +125,32 @@ public class WatchForReleased : MonoBehaviour
             Quaternion turn = Quaternion.Euler(Vector3.Cross(Vector3.up, objectTracker.initialPosition - finalPositionAdjusted));
             
 
-            PhysicsText.TextRotate(heightAboveOriginText, turn);
-            PhysicsText.TextPosition(heightAboveOriginText, textPosition);
+            //PhysicsText.TextRotate(heightAboveOriginText, turn);
+           // PhysicsText.TextPosition(heightAboveOriginText, textPosition);
             PhysicsText.TextShow(heightAboveOriginText, true);
 
             launchSpeed = motionVectorCalculator.GetSpeed();
             PhysicsText.TextSet(launchSpeedText, launchSpeed.ToString("0.00") + " m/s");
-            PhysicsText.TextRotate(launchSpeedText, turn);
-            PhysicsText.TextPosition(launchSpeedText, objectTracker.initialPosition);
+            //PhysicsText.TextRotate(launchSpeedText, turn);
+            //PhysicsText.TextPosition(launchSpeedText, objectTracker.initialPosition);
             PhysicsText.TextShow(launchSpeedText, true);
 
             launchAngle = motionVectorCalculator.GetAngle();
             PhysicsText.TextSet(launchAngleText, launchAngle.ToString("0.00") + " degrees");
-            PhysicsText.TextRotate(launchAngleText, turn);
-            PhysicsText.TextPosition(launchAngleText, objectTracker.initialPosition - new Vector3(0,0.15f,0));
+            //PhysicsText.TextRotate(launchAngleText, turn);
+            //PhysicsText.TextPosition(launchAngleText, objectTracker.initialPosition - new Vector3(0,0.15f,0));
             PhysicsText.TextShow(launchAngleText, true);
 
             float horizontalDistance = drawAxis3D.GetHorizontalDistance();
             PhysicsText.TextSet(horizontalDistanceText, horizontalDistance.ToString("0.00") + "m");
-            PhysicsText.TextRotate(horizontalDistanceText, turn);
-            PhysicsText.TextPosition(horizontalDistanceText, drawAxis3D.GetHorizontalFarPos());
+            //PhysicsText.TextRotate(horizontalDistanceText, turn);
+            //PhysicsText.TextPosition(horizontalDistanceText, drawAxis3D.GetHorizontalFarPos());
             PhysicsText.TextShow(horizontalDistanceText, true);
 
             float heightBelow = drawAxis3D.GetVerticalDistanceDown();
             PhysicsText.TextSet(heightBelowOriginText, heightBelow.ToString("0.00") + "m");
-            PhysicsText.TextRotate(heightBelowOriginText, turn);
-            PhysicsText.TextPosition(heightBelowOriginText, drawAxis3D.GetVerticalDownPos());
+            //PhysicsText.TextRotate(heightBelowOriginText, turn);
+            //PhysicsText.TextPosition(heightBelowOriginText, drawAxis3D.GetVerticalDownPos());
             PhysicsText.TextShow(heightBelowOriginText, true);
 
             waitingCollision = false;
